@@ -1334,9 +1334,14 @@
             "!FETCH#concept-request-body">body</a>.
           </li>
           <li>Let <var>manifest</var> be the result of running <a>processing a
-          manifest</a> given <var>text</var>, <var>manifest URL</var>, and the
-          URL that represents the address of the <a>top-level browsing
-          context</a>.
+          manifest</a> given <var>text</var> and <var>manifest URL</var>.
+          </li>
+          <li data-link-for="WebAppManifest">If
+          <var>manifest</var>["<a>start_url</a>"] is not <a>same origin</a> as
+          the URL that represents the address of the <a>top-level browsing
+          context</a>, issue a developer warning that the <a>start_url</a>
+          needs to be <a>same-origin</a> as <code>Document</code> of the
+          <a>top-level browsing context</a>, then abort these steps.
           </li>
           <li>Return <var>manifest</var> and <var>manifest URL</var>.
           </li>
@@ -1438,9 +1443,8 @@
           following algorithm. The algorithm takes a <a>string</a>
           <var>text</var> as an argument, which represents a <a>manifest</a>,
           and a <a>URL</a> <var>manifest URL</var>, which represents the
-          location of the manifest, and an optional <a>URL</a> <var>document
-          URL</var>. The output from inputting an JSON document into this
-          algorithm is a <dfn>processed manifest</dfn>.
+          location of the manifest. The output from inputting an JSON document
+          into this algorithm is a <dfn>processed manifest</dfn>.
         </p>
         <p class="issue">
           We need to catch throws associated with enumerations in IDL
@@ -1482,8 +1486,7 @@
           </li>
           <li>Set <var>manifest</var>["<a>start_url</a>"] to the result of
           running <a>processing the <code>start_url</code> member</a> given
-          <var>manifest</var>["<a>start_url</a>"], <var>manifest URL</var>, and
-          <var>document URL</var>.
+          <var>manifest</var>["<a>start_url</a>"], and <var>manifest URL</var>.
           </li>
           <li>Set <var>manifest</var>["<a>lang</a>"] to the result of running
           <a>processing the <code>lang</code> member</a> given
@@ -1987,17 +1990,12 @@
         <p>
           The steps for <dfn>processing the <code>start_url</code> member</dfn>
           are given by the following algorithm. The algorithm takes a
-          <a>USVString</a> <var>value</var>, a <a>URL</a> <var>manifest
-          URL</var>, and an optional <a>URL</a> <var>document URL</var>. This
-          algorithm returns a <a>URL</a>.
+          <a>USVString</a> <var>value</var>, and a <a>URL</a> <var>manifest
+          URL</var>. This algorithm returns a <a>URL</a>.
         </p>
         <ol>
-          <li>If <var>document URL</var> is given, and <var>manifest URL</var>
-          is not <a>same origin</a> as <var>document URL</var>, let
-          <var>default</var> be <var>document URL</var>.
-          </li>
-          <li>Otherwise, let <var>default</var> be the result of <a>parsing</a>
-          ".", using <var>manifest URL</var> as the <var>base</var> URL.
+          <li>Let <var>default</var> be the result of <a>parsing</a> ".", using
+          <var>manifest URL</var> as the <var>base</var> URL.
           </li>
           <li>If <var>value</var> is the empty <a>string</a>, return
           <var>default</var>.
@@ -2010,18 +2008,6 @@
             <ol>
               <li>
                 <a>Issue a developer warning</a>.
-              </li>
-              <li>Return <var>default</var>.
-              </li>
-            </ol>
-          </li>
-          <li>If <var>document URL</var> is given, and <var>start URL</var> is
-          not <a>same origin</a> as <var>document URL</var>:
-            <ol>
-              <li>
-                <a>Issue a developer warning</a> that the <a>start_url</a>
-                needs to be <a>same-origin</a> as <code>Document</code> of the
-                <a>top-level browsing context</a>.
               </li>
               <li>Return <var>default</var>.
               </li>
